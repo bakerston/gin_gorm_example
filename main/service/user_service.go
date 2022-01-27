@@ -6,36 +6,36 @@ import (
 )
 
 type UserService interface {
-	Insert(user models.User) error
-	Update(user models.User) error
-	Delete(user models.User) error
-	FindAll() []models.User
+	InsertUser(user models.User) error
+	UpdateUser(user models.User) error
+	DeleteUser(user models.User) error
+	FindAllUser() []models.User
 }
 
 type userService struct {
 	userDao dao.UserDao
 }
 
-func (service *userService) Insert(user models.User) error {
-	service.userDao.Insert(user)
+func (service *userService) InsertUser(user models.User) error {
+	service.userDao.InsertUser(user)
 	return nil
 }
 
-func (service *userService) Update(user models.User) error {
-	service.userDao.Update(user)
+func (service *userService) UpdateUser(user models.User) error {
+	service.userDao.UpdateUser(user)
 	return nil
 }
 
-func (service *userService) Delete(user models.User) error {
-	service.userDao.Delete(user)
+func (service *userService) DeleteUser(user models.User) error {
+	service.userDao.DeleteUser(user)
 	return nil
 }
 
-func (service *userService) FindAll() []models.User {
-	return service.userDao.FindAll()
+func (service *userService) FindAllUser() []models.User {
+	return service.userDao.FindAllUser()
 }
 
-func New(dao dao.UserDao) UserService {
+func NewUser(dao dao.UserDao) UserService {
 	return &userService{
 		userDao: dao,
 	}

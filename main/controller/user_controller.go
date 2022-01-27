@@ -9,66 +9,60 @@ import (
 )
 
 type UserController interface {
-	Insert(c *gin.Context) error
-	Update(c *gin.Context) error
-	Delete(c *gin.Context) error
-	FindAll() []models.User
-	ShowAll(c *gin.Context)
+	InsertUser(c *gin.Context) error
+	UpdateUser(c *gin.Context) error
+	DeleteUser(c *gin.Context) error
+	FindAllUser() []models.User
 }
 
 type userController struct {
 	userService service.UserService
 }
 
-var validate *validator.Validate
+var validateUser *validator.Validate
 
-func (controller *userController) Insert(c *gin.Context) error {
+func (controller *userController) InsertUser(c *gin.Context) error {
 	var user models.User
 	err := c.ShouldBindJSON(&user)
 	if err != nil {
 		return err
 	}
-	err = validate.Struct(user)
+	err = validateUser.Struct(user)
 	if err != nil {
 		return err
 	}
-	controller.userService.Insert(user)
+	controller.userService.InsertUser(user)
 	return nil
 }
 
-func (controller *userController) Update(c *gin.Context) error {
+func (controller *userController) UpdateUser(c *gin.Context) error {
 	var user models.User
 	id, err := strconv.ParseInt(c.Param("id"), 0, 0)
 	if err != nil {
 		return err
 	}
 	user.Id = int(id)
-	controller.userService.Update(user)
+	controller.userService.UpdateUser(user)
 	return nil
 }
 
-func (controller *userController) Delete(c *gin.Context) error {
+func (controller *userController) DeleteUser(c *gin.Context) error {
 	var user models.User
 	id, err := strconv.ParseInt(c.Param("id"), 0, 0)
 	if err != nil {
 		return err
 	}
 	user.Id = int(id)
-	controller.userService.Delete(user)
+	controller.userService.DeleteUser(user)
 	return nil
 }
 
-func (controller *userController) FindAll() []models.User {
-	return controller.userService.FindAll()
+func (controller *userController) FindAllUser() []models.User {
+	return controller.userService.FindAllUser()
 }
 
-func (controller *userController) ShowAll(c *gin.Context) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func New(userService service.UserService) UserController {
-	validate = validator.New()
+func NewUser(userService service.UserService) UserController {
+	validateUser = validator.New()
 	return &userController{
 		userService: userService,
 	}

@@ -7,37 +7,37 @@ import (
 )
 
 type UserDao interface {
-	Insert(user models.User)
-	Update(user models.User)
-	Delete(user models.User)
-	FindAll() []models.User
+	InsertUser(user models.User)
+	UpdateUser(user models.User)
+	DeleteUser(user models.User)
+	FindAllUser() []models.User
 	CloseDB()
 }
 
-type Database struct {
+type DatabaseUser struct {
 	connection *gorm.DB
 }
 
-func (db *Database) Insert(user models.User) {
+func (db *DatabaseUser) InsertUser(user models.User) {
 	db.connection.Create(&user)
 }
 
-func (db *Database) Update(user models.User) {
+func (db *DatabaseUser) UpdateUser(user models.User) {
 	db.connection.Save(&user)
 }
 
-func (db *Database) Delete(user models.User) {
+func (db *DatabaseUser) DeleteUser(user models.User) {
 	db.connection.Delete(&user)
 }
 
-func (db *Database) FindAll() []models.User {
+func (db *DatabaseUser) FindAllUser() []models.User {
 	var userList []models.User
 	db.connection.Find(&userList)
 	return userList
 }
 
 func InitUserDao() UserDao {
-	dsn := "root:software@tcp(127.0.0.1:3306)/amazon?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:Zhangchi1@tcp(127.0.0.1:3306)/gin1?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect database")
@@ -46,10 +46,10 @@ func InitUserDao() UserDao {
 	if err != nil {
 		return nil
 	}
-	return &Database{connection: db}
+	return &DatabaseUser{connection: db}
 }
 
-func (db *Database) CloseDB() {
+func (db *DatabaseUser) CloseDB() {
 	database, _ := db.connection.DB()
 	err := database.Close()
 	if err != nil {
